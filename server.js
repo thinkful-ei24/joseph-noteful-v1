@@ -2,13 +2,15 @@
 
 // Load array of notes
 const data = require('./db/notes');
+const simDB = require('./db/simDB');
+const notes =simDB.initialize(data);
 
 console.log('Hello Noteful!');
 
 const express = require('express');
 const app = express();
 const {PORT} = require('./config');
-const {logger} = require('./middleware/logger.js');
+const {logger} = require('./middleware/logger');
 
 app.use(logger);
 
