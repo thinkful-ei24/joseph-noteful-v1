@@ -8,6 +8,9 @@ console.log('Hello Noteful!');
 const express = require('express');
 const app = express();
 const {PORT} = require('./config');
+const {logger} = require('./middleware/logger.js');
+
+app.use(logger);
 
 app.listen(PORT, function(){
   console.info(`Server listening on & ${this.address().port}`);
