@@ -14,11 +14,11 @@ const {logger} = require('./middleware/logger');
 
 app.use(logger);
 
-app.use(function (req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  res.status(404).json({ message: 'Not Found' });
-});
+// app.use(function (req, res, next) {
+//   var err = new Error('Not Found');
+//   err.status = 404;
+//   res.status(404).json({ message: 'Not Found' });
+// });
 
 app.use(function (err, req, res, next) {
   res.status(err.status || 500);
@@ -28,16 +28,17 @@ app.use(function (err, req, res, next) {
   });
 });
 
-app.get('/api/notes', (req, res) => { 
-  const searchTerm = req.query.searchTerm;
-  if (searchTerm) {
-    console.log(searchTerm);
-    return res.json(data.filter(item => item.title.includes(searchTerm)));
-
-  }
-  res.json(data);
+app.get('/api/notes', (req, res, next) => {
+  const {searchTerm} = req.query;
+  notes.filter(searchTerm, (err, list) => {
+    
+    if (err) {
+      return next(err);
+    }
+    res.json(list);
+  });
 });
-
+    
 app.get('/api/notes/:id',(req,res) =>{
   const note = data.find(note => note.id === Number(req.params.id));
   res.json(note);
