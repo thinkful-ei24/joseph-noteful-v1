@@ -39,9 +39,13 @@ app.get('/api/notes', (req, res, next) => {
   });
 });
     
-app.get('/api/notes/:id',(req,res) =>{
-  const note = data.find(note => note.id === Number(req.params.id));
-  res.json(note);
+app.get('/api/notes/:id',(req, res, next) =>{
+  notes.find(req.params.id, (err, item) => {
+    if (err){
+      return next(err);
+    }
+    res.json(item);
+  })  
 });
 
 app.listen(PORT, function(){
