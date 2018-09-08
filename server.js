@@ -5,20 +5,13 @@ const simDB = require('./db/simDB');
 const notes =simDB.initialize(data);
 
 const {PORT} = require('./config');
-const {logger} = require('./middleware/logger');
-
+const morgan = require('morgan');
 const express = require('express');
 const app = express();
 
 app.use(express.static('public'));
 app.use(express.json());
-app.use(logger);
-
-// app.use(function (req, res, next) {
-//   var err = new Error('Not Found');
-//   err.status = 404;
-//   res.status(404).json({ message: 'Not Found' });
-// });
+app.use(morgan('dev'));
 
 app.use(function (err, req, res, next) {
   res.status(err.status || 500);
